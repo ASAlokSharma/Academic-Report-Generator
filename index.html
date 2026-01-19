@@ -1,0 +1,2639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Portal | VibeMedia International School</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;700&family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #0c0c14;
+            --primary-light: #1a1a2e;
+            --accent: #d4af37;
+            --accent-glow: rgba(212, 175, 55, 0.4);
+            --accent-light: #f4e4a6;
+            --bg-main: #0a0a0f;
+            --bg-card: #ffffff;
+            --text-dark: #1a1a1a;
+            --text-light: #666;
+            --text-lighter: #999;
+            --success: #10b981;
+            --error: #ef4444;
+            --info: #3b82f6;
+            --gradient-gold: linear-gradient(135deg, #d4af37 0%, #f9e076 100%);
+            --gradient-dark: linear-gradient(135deg, #0c0c14 0%, #1a1a2e 100%);
+            --gradient-blue: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            --gradient-success: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+            --gradient-danger: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+            --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            --shadow-xl: 0 35px 60px -15px rgba(0, 0, 0, 0.7);
+            --shadow-gold: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Figtree', sans-serif;
+            background: var(--bg-main);
+            color: white;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(26, 26, 46, 0.3) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(10, 10, 15, 1) 0%, transparent 100%);
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .floating-shapes {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            opacity: 0.1;
+        }
+
+        .shape-1 { width: 300px; height: 300px; top: 10%; left: 5%; animation: float 25s infinite linear; }
+        .shape-2 { width: 200px; height: 200px; top: 70%; right: 10%; animation: float 30s infinite linear reverse; }
+        .shape-3 { width: 150px; height: 150px; bottom: 20%; left: 20%; animation: float 20s infinite linear; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(20px, 20px) rotate(90deg); }
+            50% { transform: translate(0, 40px) rotate(180deg); }
+            75% { transform: translate(-20px, 20px) rotate(270deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Top Navigation */
+        .top-nav {
+            background: rgba(12, 12, 20, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 18px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-text {
+            color: white;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .logo-text h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-text .subtitle {
+            font-size: 0.75rem;
+            color: var(--accent-light);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-family: 'Figtree', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: var(--accent-light);
+            padding: 10px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-btn:hover {
+            background: var(--gradient-gold);
+            border-color: var(--accent);
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-gold);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: 15px;
+        }
+
+        .theme-btn {
+            background: transparent;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: var(--accent-light);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .theme-btn.active {
+            background: var(--gradient-gold);
+            color: var(--primary);
+        }
+
+        .theme-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            padding: 80px 20px 60px;
+            position: relative;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .hero-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+        }
+
+        .hero-section p {
+            color: #bbb;
+            font-size: 1.1rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+        }
+
+        .accent-line {
+            width: 100px;
+            height: 3px;
+            background: var(--gradient-gold);
+            margin: 30px auto;
+            border-radius: 3px;
+        }
+
+        /* Main Dashboard Card */
+        .dashboard-card {
+            background: var(--gradient-blue);
+            border-radius: 30px;
+            padding: 50px;
+            box-shadow: var(--shadow-xl);
+            margin-bottom: 60px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-gold);
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .card-header h3 {
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .card-header p {
+            color: var(--accent-light);
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.8;
+        }
+
+        /* Verification Tabs */
+        .verification-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            background: rgba(26, 26, 46, 0.5);
+            padding: 8px;
+            border-radius: 15px;
+            max-width: 500px;
+            margin: 0 auto 30px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            background: transparent;
+            border: none;
+            color: #aaa;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .tab-btn.active {
+            background: var(--gradient-gold);
+            color: var(--primary);
+            box-shadow: var(--shadow-gold);
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+
+        /* Verification Form */
+        .verification-form {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .verification-form.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            color: white;
+            font-weight: 500;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-label i {
+            color: var(--accent);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 18px 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            border-radius: 15px;
+            color: white;
+            font-size: 1rem;
+            font-family: 'Figtree', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--accent-glow);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Input Section */
+        .input-section {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 968px) {
+            .input-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .upload-zone {
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.8) 0%, rgba(22, 33, 62, 0.8) 100%);
+            border: 2px dashed rgba(212, 175, 55, 0.3);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--accent);
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.9) 0%, rgba(22, 33, 62, 0.9) 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.2);
+        }
+
+        .upload-zone.active {
+            border-color: var(--success);
+            border-style: solid;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(26, 26, 46, 0.9) 100%);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .upload-zone.active .upload-icon {
+            color: var(--success);
+            transform: scale(1.1);
+        }
+
+        .upload-zone h4 {
+            font-size: 1.1rem;
+            color: white;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-zone p {
+            font-size: 0.85rem;
+            color: var(--accent-light);
+            opacity: 0.8;
+        }
+
+        #excelFile {
+            display: none;
+        }
+
+        .search-zone {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .verification-section {
+            background: rgba(26, 26, 46, 0.6);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .btn-search {
+            background: var(--gradient-gold);
+            color: var(--primary);
+            border: none;
+            padding: 20px 40px;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+            margin-top: 10px;
+        }
+
+        .btn-search:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-search:active {
+            transform: translateY(-1px);
+        }
+
+        /* Messages */
+        #message {
+            margin-top: 25px;
+            padding: 20px 25px;
+            border-radius: 15px;
+            font-size: 0.95rem;
+            display: none;
+            align-items: center;
+            gap: 15px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .success { 
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(26, 26, 46, 0.8) 100%);
+            color: #a7f3d0; 
+            border-left: 4px solid var(--success);
+            display: flex !important;
+        }
+        
+        .error { 
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(26, 26, 46, 0.8) 100%);
+            color: #fecaca; 
+            border-left: 4px solid var(--error);
+            display: flex !important;
+        }
+        
+        .info { 
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(26, 26, 46, 0.8) 100%);
+            color: #bfdbfe; 
+            border-left: 4px solid var(--info);
+            display: flex !important;
+        }
+
+        /* Result Display Container */
+        .result-container {
+            display: none;
+            opacity: 0;
+            animation: slideUp 0.8s ease-out forwards;
+        }
+        
+        .result-container.show {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(50px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0);
+            }
+        }
+
+        /* Theme Modes for Result Display */
+        .result-paper {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0;
+            box-shadow: var(--shadow-xl);
+            border-radius: 25px;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(212, 175, 55, 0.1);
+        }
+
+        /* Dark Mode (Default) */
+        .result-paper.dark-mode {
+            background: linear-gradient(180deg, #1a1a2e 0%, #0c0c14 100%);
+            color: white;
+        }
+
+        /* Colorful Mode */
+        .result-paper.colorful-mode {
+            background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+            color: #1a1a1a;
+        }
+
+        .result-paper.colorful-mode .result-header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #2d2d4d 100%);
+        }
+
+        .result-paper.colorful-mode .student-profile {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .result-paper.colorful-mode .profile-item {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .result-paper.colorful-mode .profile-item:hover {
+            background: rgba(212, 175, 55, 0.15);
+        }
+
+        .result-paper.colorful-mode .performance-summary {
+            background: #2d2d4d;
+        }
+
+        .result-paper.colorful-mode .subjects-section {
+            background: #1a1a2e;
+        }
+
+        .result-paper.colorful-mode .subject-card {
+            background: #2d2d4d;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .result-paper.colorful-mode .subject-card:hover {
+            border-color: var(--accent);
+            background: #3a3a5a;
+        }
+
+        .result-paper.colorful-mode .performance-card {
+            background: #2d2d4d;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .result-paper.colorful-mode .insights-section {
+            background: #2d2d4d;
+        }
+
+        .result-paper.colorful-mode .insight-card {
+            background: #3a3a5a;
+        }
+
+        .result-paper.colorful-mode .signature-box {
+            background: #2d2d4d;
+        }
+
+        .result-paper.colorful-mode .report-footer {
+            background: #1a1a2e;
+        }
+
+        /* Modern Header */
+        .result-header {
+            padding: 50px 60px 40px;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+            background: linear-gradient(135deg, #0c0c14 0%, #1a1a2e 100%);
+        }
+
+        .header-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .school-info {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .school-logo {
+            width: 100px;
+            height: 100px;
+            background: var(--gradient-gold);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            border: 3px solid var(--accent);
+        }
+
+        .school-logo .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .school-text h1 {
+            color: white;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .school-text .motto {
+            color: var(--accent);
+            font-size: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .school-text .director {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .academic-badge {
+            background: rgba(212, 175, 55, 0.15);
+            border: 2px solid var(--accent);
+            padding: 20px 30px;
+            border-radius: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .academic-badge .session {
+            color: var(--accent);
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: block;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .academic-badge .report-type {
+            color: white;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 5px;
+        }
+
+        /* SYMMETRIC Student Profile Cards */
+        .student-profile {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            padding: 30px;
+            border-radius: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 968px) {
+            .student-profile {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .student-profile {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .profile-item {
+            text-align: center;
+            padding: 20px 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .profile-item:hover {
+            background: rgba(212, 175, 55, 0.1);
+            transform: translateY(-3px);
+            border-color: rgba(212, 175, 55, 0.2);
+        }
+
+        .profile-item .label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .profile-item .value {
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 700;
+            font-family: 'Figtree', sans-serif;
+            line-height: 1.3;
+        }
+
+        /* Performance Summary */
+        .performance-summary {
+            padding: 50px 60px;
+            background: #1a1a2e;
+        }
+
+        .summary-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .summary-title h2 {
+            font-size: 2.2rem;
+            color: white;
+            margin-bottom: 10px;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .summary-title p {
+            color: var(--accent-light);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.8;
+        }
+
+        /* Performance Cards Grid - SYMMETRIC */
+        .performance-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        @media (max-width: 768px) {
+            .performance-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .performance-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 35px 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .performance-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border-color: var(--accent);
+        }
+
+        .performance-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient-gold);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--accent);
+        }
+
+        .card-header h3 {
+            font-size: 1.3rem;
+            color: white;
+            font-weight: 600;
+        }
+
+        .card-value {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 10px;
+            font-family: 'Figtree', sans-serif;
+        }
+
+        .card-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .card-progress {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .card-progress-bar {
+            height: 100%;
+            border-radius: 10px;
+            background: var(--gradient-gold);
+            transition: width 1.5s ease-out;
+        }
+
+        /* SYMMETRIC Subject Cards */
+        .subjects-section {
+            padding: 50px 60px;
+            background: #0c0c14;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-header h2 {
+            font-size: 2.2rem;
+            color: white;
+            margin-bottom: 15px;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .section-header p {
+            color: var(--accent-light);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.8;
+        }
+
+        /* Symmetric Grid Layout */
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .subject-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.15);
+            border-color: var(--accent);
+        }
+
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--gradient-gold);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .subject-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .subject-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .subject-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: white;
+            font-family: 'Figtree', sans-serif;
+        }
+
+        .subject-grade {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--primary);
+            background: var(--gradient-gold);
+        }
+
+        .marks-display {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .obtained-marks {
+            font-size: 3.2rem;
+            font-weight: 800;
+            color: white;
+            font-family: 'Figtree', sans-serif;
+        }
+
+        .total-marks {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .progress-container {
+            margin-bottom: 25px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .progress-bar-large {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill-large {
+            height: 100%;
+            border-radius: 10px;
+            background: var(--gradient-gold);
+            transition: width 1.2s ease-out;
+        }
+
+        .subject-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Overall Grade Section */
+        .grade-showcase {
+            background: var(--gradient-gold);
+            padding: 50px;
+            border-radius: 25px;
+            text-align: center;
+            margin: 50px auto;
+            max-width: 800px;
+            box-shadow: 0 20px 60px rgba(212, 175, 55, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .grade-showcase::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+        }
+
+        .trophy-icon {
+            font-size: 5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+            position: relative;
+            z-index: 1;
+        }
+
+        .grade-value {
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-family: 'Playfair Display', serif;
+            position: relative;
+            z-index: 1;
+        }
+
+        .grade-description {
+            color: var(--primary-light);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .grade-details {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .grade-detail {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .grade-detail .label {
+            color: var(--primary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .grade-detail .value {
+            color: var(--primary);
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        /* Performance Insights */
+        .insights-section {
+            padding: 50px 60px;
+            background: #1a1a2e;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .insight-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .insight-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border-color: var(--accent);
+        }
+
+        .insight-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .insight-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            background: var(--gradient-gold);
+        }
+
+        .insight-header h4 {
+            font-size: 1.2rem;
+            color: white;
+            font-weight: 600;
+        }
+
+        .insight-content p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .insight-list {
+            list-style: none;
+        }
+
+        .insight-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .insight-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* Report Footer */
+        .report-footer {
+            background: #0c0c14;
+            padding: 50px 60px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .signatures {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .signature-box {
+            text-align: center;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .signature-line {
+            width: 150px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.3);
+            margin: 20px auto;
+        }
+
+        .signature-label {
+            color: var(--accent);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .signature-name {
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .signature-title {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+        }
+
+        .footer-meta {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-meta strong {
+            color: var(--accent-light);
+        }
+
+        /* Print Button */
+        .print-actions {
+            text-align: center;
+            margin: 50px 0 60px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn-print {
+            background: var(--gradient-dark);
+            color: white;
+            padding: 20px 50px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 700;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-print:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+        }
+
+        /* Animations */
+        @keyframes progressAnimation {
+            from { width: 0%; }
+            to { width: var(--target-width); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .performance-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .dashboard-card, .result-paper {
+                padding: 30px 20px;
+            }
+            
+            .result-header, .performance-summary, .subjects-section, .insights-section, .report-footer {
+                padding: 40px 30px;
+            }
+            
+            .header-main {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .performance-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .subjects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .insights-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-section h2 {
+                font-size: 2.5rem;
+            }
+            
+            .school-text h1 {
+                font-size: 1.8rem;
+            }
+            
+            .card-value {
+                font-size: 2.8rem;
+            }
+            
+            .grade-value {
+                font-size: 3rem;
+            }
+            
+            .student-profile {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* PRINT STYLES - A4 Single Page Professional */
+        @media print {
+            body, html {
+                width: 210mm;
+                height: 297mm;
+                margin: 0;
+                padding: 0;
+                background: white !important;
+                font-size: 12pt;
+                color: black !important;
+            }
+            
+            .container {
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            
+            .result-container {
+                display: block !important;
+                opacity: 1 !important;
+                transform: none !important;
+                animation: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                page-break-inside: avoid;
+            }
+            
+            .result-paper {
+                width: 190mm !important;
+                max-width: 190mm !important;
+                margin: 10mm auto !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                border: 1px solid #ddd !important;
+                background: white !important;
+                color: black !important;
+                overflow: visible !important;
+            }
+            
+            /* Header for Print */
+            .result-header {
+                background: white !important;
+                color: black !important;
+                padding: 15mm 15mm 10mm !important;
+                border-bottom: 2px solid #000 !important;
+            }
+            
+            .school-logo {
+                background: white !important;
+                border: 2px solid #000 !important;
+                box-shadow: none !important;
+            }
+            
+            .school-logo .logo-text {
+                color: black !important;
+                font-size: 2rem !important;
+            }
+            
+            .school-text h1 {
+                color: black !important;
+                font-size: 1.8rem !important;
+                margin-bottom: 3px !important;
+            }
+            
+            .school-text .motto {
+                color: #666 !important;
+                font-size: 0.9rem !important;
+            }
+            
+            .school-text .director {
+                color: #666 !important;
+            }
+            
+            .academic-badge {
+                background: white !important;
+                border: 2px solid #000 !important;
+            }
+            
+            .academic-badge .session {
+                color: black !important;
+            }
+            
+            .academic-badge .report-type {
+                color: #666 !important;
+            }
+            
+            /* Student Profile for Print */
+            .student-profile {
+                background: white !important;
+                border: 1px solid #ddd !important;
+                padding: 5mm !important;
+                margin: 0 15mm !important;
+                display: grid !important;
+                grid-template-columns: repeat(3, 1fr) !important;
+                gap: 3mm !important;
+            }
+            
+            .profile-item {
+                background: white !important;
+                border: 1px solid #ddd !important;
+                color: black !important;
+                min-height: auto !important;
+                padding: 3mm !important;
+            }
+            
+            .profile-item .label {
+                color: #666 !important;
+                font-size: 0.7rem !important;
+            }
+            
+            .profile-item .value {
+                color: black !important;
+                font-size: 1rem !important;
+            }
+            
+            /* Performance Summary for Print */
+            .performance-summary {
+                background: white !important;
+                padding: 10mm 15mm 5mm !important;
+                page-break-inside: avoid;
+            }
+            
+            .summary-title h2 {
+                color: black !important;
+                font-size: 1.5rem !important;
+            }
+            
+            .summary-title p {
+                color: #666 !important;
+            }
+            
+            /* Performance Cards for Print */
+            .performance-grid {
+                display: grid !important;
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 3mm !important;
+                margin: 5mm 0 !important;
+            }
+            
+            .performance-card {
+                background: white !important;
+                border: 1px solid #ddd !important;
+                box-shadow: none !important;
+                padding: 3mm !important;
+                min-height: auto !important;
+                page-break-inside: avoid;
+            }
+            
+            .performance-card::before {
+                background: #000 !important;
+                height: 2px !important;
+            }
+            
+            .card-header h3 {
+                color: black !important;
+                font-size: 1rem !important;
+            }
+            
+            .card-value {
+                color: black !important;
+                font-size: 2rem !important;
+            }
+            
+            .card-label {
+                color: #666 !important;
+            }
+            
+            .card-progress {
+                background: #eee !important;
+            }
+            
+            .card-progress-bar {
+                background: #000 !important;
+            }
+            
+            /* Subject Cards for Print */
+            .subjects-section {
+                background: white !important;
+                padding: 5mm 15mm !important;
+                page-break-inside: avoid;
+            }
+            
+            .section-header h2 {
+                color: black !important;
+                font-size: 1.5rem !important;
+            }
+            
+            .subjects-grid {
+                display: grid !important;
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 3mm !important;
+                margin: 3mm 0 !important;
+            }
+            
+            .subject-card {
+                background: white !important;
+                border: 1px solid #ddd !important;
+                box-shadow: none !important;
+                padding: 3mm !important;
+                min-height: auto !important;
+                page-break-inside: avoid;
+            }
+            
+            .subject-card::before {
+                background: #000 !important;
+            }
+            
+            .subject-name {
+                color: black !important;
+                font-size: 1rem !important;
+            }
+            
+            .subject-grade {
+                background: #eee !important;
+                color: black !important;
+                padding: 2mm 4mm !important;
+                font-size: 0.8rem !important;
+            }
+            
+            .obtained-marks {
+                color: black !important;
+                font-size: 2rem !important;
+            }
+            
+            .total-marks {
+                color: #666 !important;
+            }
+            
+            .progress-bar-large {
+                background: #eee !important;
+            }
+            
+            .progress-fill-large {
+                background: #000 !important;
+            }
+            
+            .stat {
+                background: #f9f9f9 !important;
+                border: 1px solid #ddd !important;
+            }
+            
+            .stat-value {
+                color: black !important;
+            }
+            
+            .stat-label {
+                color: #666 !important;
+            }
+            
+            /* Grade Showcase for Print */
+            .grade-showcase {
+                background: white !important;
+                border: 2px solid #000 !important;
+                margin: 5mm auto !important;
+                padding: 5mm !important;
+                max-width: 150mm !important;
+                box-shadow: none !important;
+            }
+            
+            .trophy-icon {
+                color: black !important;
+                font-size: 3rem !important;
+            }
+            
+            .grade-value {
+                color: black !important;
+                font-size: 2.5rem !important;
+            }
+            
+            .grade-description {
+                color: #666 !important;
+            }
+            
+            .grade-detail {
+                background: #f9f9f9 !important;
+                border: 1px solid #ddd !important;
+            }
+            
+            .grade-detail .label {
+                color: #666 !important;
+            }
+            
+            .grade-detail .value {
+                color: black !important;
+            }
+            
+            /* Insights for Print */
+            .insights-section {
+                background: white !important;
+                padding: 5mm 15mm !important;
+                page-break-inside: avoid;
+            }
+            
+            .insight-card {
+                background: white !important;
+                border: 1px solid #ddd !important;
+                box-shadow: none !important;
+                margin-bottom: 3mm !important;
+            }
+            
+            .insight-icon {
+                background: #000 !important;
+            }
+            
+            .insight-header h4 {
+                color: black !important;
+            }
+            
+            .insight-content p {
+                color: #666 !important;
+            }
+            
+            .insight-list li {
+                color: black !important;
+                border-bottom: 1px solid #ddd !important;
+            }
+            
+            /* Footer for Print */
+            .report-footer {
+                background: white !important;
+                padding: 5mm 15mm !important;
+                border-top: 1px solid #ddd !important;
+                page-break-before: always;
+            }
+            
+            .signatures {
+                display: grid !important;
+                grid-template-columns: repeat(4, 1fr) !important;
+                gap: 3mm !important;
+            }
+            
+            .signature-box {
+                background: white !important;
+                border: 1px solid #ddd !important;
+                box-shadow: none !important;
+                padding: 2mm !important;
+            }
+            
+            .signature-label {
+                color: #666 !important;
+            }
+            
+            .signature-name {
+                color: black !important;
+            }
+            
+            .signature-title {
+                color: #666 !important;
+            }
+            
+            .footer-meta {
+                color: #666 !important;
+                border-top: 1px solid #ddd !important;
+            }
+            
+            /* Hide elements for print */
+            .bg-animation, 
+            .floating-shapes, 
+            .top-nav, 
+            .hero-section, 
+            .dashboard-card, 
+            .print-actions,
+            .theme-toggle,
+            .nav-right,
+            .theme-btn,
+            .btn-print,
+            .nav-btn,
+            #message {
+                display: none !important;
+            }
+            
+            /* Ensure proper page breaks */
+            .result-paper > * {
+                page-break-inside: avoid;
+            }
+            
+            /* Font adjustments for print */
+            body, h1, h2, h3, h4, h5, h6, p, span, div {
+                color: black !important;
+                font-family: 'Times New Roman', Times, serif !important;
+                line-height: 1.4 !important;
+            }
+            
+            /* Remove animations */
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+            
+            /* Force black and white */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="nav-content">
+            <div class="logo-section">
+                <div class="logo-text">
+                    <h1>VibeMedia International School</h1>
+                    <div class="subtitle">
+                        <i class="fas fa-user-graduate"></i>
+                        <span>Prince Sharma - Academic Portal</span>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <div class="theme-toggle">
+                    <button class="theme-btn active" onclick="setTheme('dark')">
+                        <i class="fas fa-moon"></i> Dark
+                    </button>
+                    <button class="theme-btn" onclick="setTheme('colorful')">
+                        <i class="fas fa-palette"></i> Colorful
+                    </button>
+                </div>
+                <button class="nav-btn"><i class="fas fa-user-graduate"></i> Student</button>
+                <button class="nav-btn"><i class="fas fa-chalkboard-teacher"></i> Faculty</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h2>Academic Excellence Portal</h2>
+        <p>Secure access to academic records, performance analytics, and official reports</p>
+        <div class="accent-line"></div>
+    </div>
+
+    <div class="container">
+        <!-- Dashboard Card -->
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h3>Student Result Management System</h3>
+                <p>Upload the database file and verify student identity to access academic records</p>
+            </div>
+
+            <!-- Verification Tabs -->
+            <div class="verification-tabs">
+                <button class="tab-btn active" id="tabUpload" onclick="switchTab('upload')">
+                    <i class="fas fa-upload"></i> Upload Database
+                </button>
+                <button class="tab-btn" id="tabVerify" onclick="switchTab('verify')">
+                    <i class="fas fa-user-check"></i> Student Verification
+                </button>
+                <button class="tab-btn" id="tabSearch" onclick="switchTab('search')">
+                    <i class="fas fa-search"></i> Search Records
+                </button>
+            </div>
+
+            <!-- Upload Tab -->
+            <div class="verification-form active" id="uploadForm">
+                <div class="input-section">
+                    <label for="excelFile" class="upload-zone" id="uploadZone">
+                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                        <h4 id="uploadTitle">Upload Student Database</h4>
+                        <p id="uploadSubtitle">Click to browse Excel file (.xlsx, .xls format)</p>
+                        <p style="font-size:0.8rem; margin-top:10px; color:#aaa;">Expected columns: Student ID, Student Name, Admn. No., Class, Roll No., etc.</p>
+                    </label>
+                    <input type="file" id="excelFile" accept=".xlsx, .xls">
+                    
+                    <div class="search-zone">
+                        <div class="verification-section">
+                            <h4 style="color:white; margin-bottom:20px; font-size:1.1rem;"><i class="fas fa-info-circle"></i> Database Information</h4>
+                            <p style="color:#ccc; margin-bottom:15px; font-size:0.9rem;">Upload the Excel file containing student records. The system will extract data for verification and result display.</p>
+                            <div style="background:rgba(212,175,55,0.1); padding:15px; border-radius:10px; border-left:3px solid var(--accent);">
+                                <p style="color:var(--accent-light); font-size:0.85rem; margin:0;"><i class="fas fa-lightbulb"></i> <strong>Tip:</strong> Ensure the Excel file follows the required structure with proper column headers.</p>
+                            </div>
+                        </div>
+                        
+                        <button class="btn-search" onclick="switchTab('verify')">
+                            <span><i class="fas fa-arrow-right"></i> Proceed to Verification</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Verification Tab -->
+            <div class="verification-form" id="verifyForm">
+                <div class="input-section">
+                    <div class="upload-zone" style="cursor:default;">
+                        <i class="fas fa-database upload-icon"></i>
+                        <h4>Database Status</h4>
+                        <p id="dbStatus">No database loaded</p>
+                        <button class="nav-btn" style="margin-top:15px; width:auto;" onclick="switchTab('upload')">
+                            <i class="fas fa-redo"></i> Change File
+                        </button>
+                    </div>
+                    
+                    <div class="search-zone">
+                        <div class="verification-section">
+                            <h4 style="color:white; margin-bottom:20px; font-size:1.1rem;"><i class="fas fa-user-shield"></i> Student Identity Verification</h4>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="verifyName"><i class="fas fa-user"></i> Student Full Name</label>
+                                <input type="text" id="verifyName" class="form-input" placeholder="Enter student's full name as per records">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="verifyStudentId"><i class="fas fa-id-card"></i> Student ID</label>
+                                <input type="text" id="verifyStudentId" class="form-input" placeholder="e.g., TVMS52367">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="verifyAdmission"><i class="fas fa-hashtag"></i> Admission Number</label>
+                                <input type="text" id="verifyAdmission" class="form-input" placeholder="Enter admission number">
+                            </div>
+                            
+                            <div style="display:flex; gap:10px; margin-top:10px;">
+                                <button class="nav-btn" style="flex:1;" onclick="switchTab('upload')">
+                                    <i class="fas fa-arrow-left"></i> Back
+                                </button>
+                                <button class="btn-search" style="flex:2;" onclick="verifyStudent()">
+                                    <span><i class="fas fa-check-circle"></i> Verify Identity</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Tab -->
+            <div class="verification-form" id="searchForm">
+                <div class="input-section">
+                    <div class="upload-zone" style="cursor:default;">
+                        <i class="fas fa-user-check upload-icon"></i>
+                        <h4>Verification Status</h4>
+                        <p id="verifyStatus">Not verified</p>
+                        <button class="nav-btn" style="margin-top:15px; width:auto;" onclick="switchTab('verify')">
+                            <i class="fas fa-redo"></i> Re-verify
+                        </button>
+                    </div>
+                    
+                    <div class="search-zone">
+                        <div class="verification-section">
+                            <h4 style="color:white; margin-bottom:20px; font-size:1.1rem;"><i class="fas fa-search"></i> Search Academic Records</h4>
+                            <p style="color:#ccc; margin-bottom:20px; font-size:0.9rem;">Enter Student ID to retrieve academic records for the verified student.</p>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="studentId"><i class="fas fa-graduation-cap"></i> Student ID</label>
+                                <input type="text" id="studentId" class="form-input" placeholder="Enter Student ID (e.g., TVMS52367)">
+                            </div>
+                            
+                            <div style="display:flex; gap:10px; margin-top:10px;">
+                                <button class="nav-btn" style="flex:1;" onclick="switchTab('verify')">
+                                    <i class="fas fa-arrow-left"></i> Back
+                                </button>
+                                <button class="btn-search" style="flex:2;" onclick="searchStudent()">
+                                    <span><i class="fas fa-file-alt"></i> Retrieve Academic Report</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="message"></div>
+        </div>
+
+        <!-- Enhanced Result Display -->
+        <div class="result-container" id="resultContainer">
+            <div class="result-paper dark-mode" id="resultPaper">
+                <!-- Modern Header -->
+                <header class="result-header">
+                    <div class="header-main">
+                        <div class="school-info">
+                            <div class="school-logo">
+                                <div class="logo-text">VM</div>
+                            </div>
+                            <div class="school-text">
+                                <h1>The VibeMedia International School</h1>
+                                <p class="motto">Excellence in Education Since 2005</p>
+                                <p class="director">Director: Aarav Sharma | System by: Prince Sharma</p>
+                            </div>
+                        </div>
+                        <div class="academic-badge">
+                            <span class="session">2025-26</span>
+                            <span class="report-type">Academic Performance Report</span>
+                        </div>
+                    </div>
+
+                    <!-- SYMMETRIC Student Profile -->
+                    <div class="student-profile" id="studentProfile"></div>
+                </header>
+
+                <!-- Performance Summary -->
+                <section class="performance-summary">
+                    <div class="summary-title">
+                        <h2>Academic Performance Overview</h2>
+                        <p>Comprehensive analysis of student's academic achievements and progress</p>
+                    </div>
+
+                    <!-- SYMMETRIC Performance Cards -->
+                    <div class="performance-grid" id="performanceGrid"></div>
+                </section>
+
+                <!-- SYMMETRIC Subject Performance -->
+                <section class="subjects-section">
+                    <div class="section-header">
+                        <h2>Subject-wise Performance Analysis</h2>
+                        <p>Detailed breakdown of marks, grades, and performance in each subject</p>
+                    </div>
+
+                    <div class="subjects-grid" id="subjectsGrid"></div>
+                </section>
+
+                <!-- Overall Grade -->
+                <div class="grade-showcase" id="gradeShowcase"></div>
+
+                <!-- Performance Insights -->
+                <section class="insights-section">
+                    <div class="section-header">
+                        <h2>Performance Insights</h2>
+                        <p>Key observations and recommendations for academic improvement</p>
+                    </div>
+
+                    <div class="insights-grid" id="insightsGrid"></div>
+                </section>
+
+                <!-- Report Footer -->
+                <footer class="report-footer">
+                    <div class="signatures">
+                        <div class="signature-box">
+                            <div class="signature-label">Class Teacher</div>
+                            <div class="signature-line"></div>
+                            <div class="signature-name">___________________</div>
+                            <div class="signature-title">Signature & Date</div>
+                        </div>
+                        <div class="signature-box">
+                            <div class="signature-label">Academic Head</div>
+                            <div class="signature-line"></div>
+                            <div class="signature-name">___________________</div>
+                            <div class="signature-title">Signature & Date</div>
+                        </div>
+                        <div class="signature-box">
+                            <div class="signature-label">Principal</div>
+                            <div class="signature-line"></div>
+                            <div class="signature-name">___________________</div>
+                            <div class="signature-title">Signature & Date</div>
+                        </div>
+                        <div class="signature-box">
+                            <div class="signature-label">Parent/Guardian</div>
+                            <div class="signature-line"></div>
+                            <div class="signature-name">___________________</div>
+                            <div class="signature-title">Signature & Date</div>
+                        </div>
+                    </div>
+                    <div class="footer-meta">
+                        <strong>Official Academic Report • The VibeMedia International School</strong> • 
+                        Document ID: <span id="genId"></span> • 
+                        Generated: <span id="genDate"></span> • 
+                        System Developed by: Prince Sharma
+                    </div>
+                </footer>
+            </div>
+
+            <div class="print-actions">
+                <button class="btn-print" onclick="window.print()">
+                    <span><i class="fas fa-print"></i> Print Official Report</span>
+                </button>
+                <button class="nav-btn" onclick="switchTab('search')">
+                    <i class="fas fa-redo"></i> Search Another Student
+                </button>
+                <button class="nav-btn" onclick="downloadPDF()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let studentsData = [];
+        let verifiedStudent = null;
+        let currentTheme = 'dark';
+
+        // Theme Switching
+        function setTheme(theme) {
+            currentTheme = theme;
+            const resultPaper = document.getElementById('resultPaper');
+            const themeButtons = document.querySelectorAll('.theme-btn');
+            
+            // Update theme buttons
+            themeButtons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Update result paper theme
+            resultPaper.className = 'result-paper ' + theme + '-mode';
+        }
+
+        // Tab Switching
+        function switchTab(tabName) {
+            // Hide all forms
+            document.getElementById('uploadForm').classList.remove('active');
+            document.getElementById('verifyForm').classList.remove('active');
+            document.getElementById('searchForm').classList.remove('active');
+            
+            // Remove active class from all tabs
+            document.getElementById('tabUpload').classList.remove('active');
+            document.getElementById('tabVerify').classList.remove('active');
+            document.getElementById('tabSearch').classList.remove('active');
+            
+            // Show selected form and activate tab
+            if (tabName === 'upload') {
+                document.getElementById('uploadForm').classList.add('active');
+                document.getElementById('tabUpload').classList.add('active');
+            } else if (tabName === 'verify') {
+                document.getElementById('verifyForm').classList.add('active');
+                document.getElementById('tabVerify').classList.add('active');
+                updateDBStatus();
+            } else if (tabName === 'search') {
+                document.getElementById('searchForm').classList.add('active');
+                document.getElementById('tabSearch').classList.add('active');
+                updateVerifyStatus();
+            }
+        }
+
+        // File Upload Handler
+        document.getElementById('excelFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const zone = document.getElementById('uploadZone');
+            const title = document.getElementById('uploadTitle');
+            const subtitle = document.getElementById('uploadSubtitle');
+            const dbStatus = document.getElementById('dbStatus');
+            
+            if(file) {
+                zone.classList.add('active');
+                title.textContent = file.name;
+                subtitle.textContent = 'File loaded successfully';
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const sheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[sheetName];
+                    studentsData = XLSX.utils.sheet_to_json(worksheet);
+                    
+                    if (studentsData.length > 0) {
+                        showMessage(`Database loaded successfully: ${studentsData.length} student records found`, 'success');
+                        dbStatus.innerHTML = `<span style="color:#10b981">${studentsData.length} records loaded</span>`;
+                    } else {
+                        showMessage('No data found in the uploaded file', 'error');
+                        dbStatus.innerHTML = `<span style="color:#ef4444">No data found</span>`;
+                    }
+                };
+                reader.onerror = function() {
+                    showMessage('Error reading the file. Please check the format.', 'error');
+                    dbStatus.innerHTML = `<span style="color:#ef4444">Error loading file</span>`;
+                };
+                reader.readAsArrayBuffer(file);
+            }
+        });
+
+        function updateDBStatus() {
+            const dbStatus = document.getElementById('dbStatus');
+            if (studentsData.length > 0) {
+                dbStatus.innerHTML = `<span style="color:#10b981"><i class="fas fa-check-circle"></i> ${studentsData.length} records loaded</span>`;
+            } else {
+                dbStatus.innerHTML = `<span style="color:#ef4444"><i class="fas fa-exclamation-circle"></i> No database loaded</span>`;
+            }
+        }
+
+        function updateVerifyStatus() {
+            const verifyStatus = document.getElementById('verifyStatus');
+            if (verifiedStudent) {
+                verifyStatus.innerHTML = `<span style="color:#10b981"><i class="fas fa-check-circle"></i> ${verifiedStudent['Student Name']} verified</span>`;
+            } else {
+                verifyStatus.innerHTML = `<span style="color:#ef4444"><i class="fas fa-exclamation-circle"></i> Not verified</span>`;
+            }
+        }
+
+        // Student Verification Function
+        function verifyStudent() {
+            const name = document.getElementById('verifyName').value.trim();
+            const studentId = document.getElementById('verifyStudentId').value.trim().toUpperCase();
+            const admission = document.getElementById('verifyAdmission').value.trim();
+
+            if (studentsData.length === 0) {
+                showMessage('Please upload the student database file first', 'error');
+                switchTab('upload');
+                return;
+            }
+            if (!name || !studentId || !admission) {
+                showMessage('Please fill in all verification fields', 'error');
+                return;
+            }
+
+            // Find student with matching details
+            let student = studentsData.find(s => {
+                const sName = String(s['Student Name'] || '').trim().toLowerCase();
+                const sId = String(s['Student ID'] || '').trim().toUpperCase();
+                const sAdm = String(s['Admn. No.'] || '').trim();
+                
+                return sName === name.toLowerCase() && 
+                       sId === studentId && 
+                       sAdm === admission;
+            });
+
+            // Try with relaxed matching for Student ID
+            if (!student) {
+                student = studentsData.find(s => {
+                    const sName = String(s['Student Name'] || '').trim().toLowerCase();
+                    const sId = String(s['Student ID'] || '').replace(/\s/g, '').toUpperCase();
+                    const sAdm = String(s['Admn. No.'] || '').trim();
+                    
+                    const cleanStudentId = studentId.replace(/\s/g, '').toUpperCase();
+                    
+                    return sName === name.toLowerCase() && 
+                           sId === cleanStudentId && 
+                           sAdm === admission;
+                });
+            }
+
+            if (student) {
+                verifiedStudent = student;
+                showMessage(`Identity verified successfully! Welcome ${student['Student Name']}`, 'success');
+                updateVerifyStatus();
+                // Auto-fill the student ID in search form
+                document.getElementById('studentId').value = student['Student ID'];
+                // Switch to search tab
+                setTimeout(() => switchTab('search'), 1000);
+            } else {
+                showMessage('Verification failed. Please check your details and try again.', 'error');
+                verifiedStudent = null;
+                updateVerifyStatus();
+            }
+        }
+
+        // Search Student Function
+        function searchStudent() {
+            const studentId = document.getElementById('studentId').value.trim().toUpperCase();
+
+            if (!verifiedStudent) {
+                showMessage('Please verify your identity first', 'error');
+                switchTab('verify');
+                return;
+            }
+            
+            if (studentsData.length === 0) {
+                showMessage('Please upload the student database file first', 'error');
+                switchTab('upload');
+                return;
+            }
+            
+            if (!studentId) {
+                showMessage('Please enter a valid Student ID', 'error');
+                return;
+            }
+
+            // Check if the entered ID matches the verified student
+            const verifiedId = String(verifiedStudent['Student ID'] || '').trim().toUpperCase();
+            const cleanVerifiedId = verifiedId.replace(/\s/g, '');
+            const cleanStudentId = studentId.replace(/\s/g, '');
+            
+            if (cleanVerifiedId !== cleanStudentId && verifiedId !== studentId) {
+                showMessage('Student ID does not match verified student. Please verify again.', 'error');
+                switchTab('verify');
+                return;
+            }
+
+            // Find the student in database
+            let student = studentsData.find(s => {
+                const id = String(s['Student ID'] || '').trim().toUpperCase();
+                return id === studentId || id.replace(/\s/g, '') === cleanStudentId;
+            });
+
+            if (student) {
+                displayEnhancedResult(student);
+                document.getElementById('message').style.display = 'none';
+            } else {
+                showMessage(`Student ID "${studentId}" not found in database`, 'error');
+                document.getElementById('resultContainer').classList.remove('show');
+            }
+        }
+
+        // Enhanced Result Display Function
+        function displayEnhancedResult(student) {
+            // Student Profile - SYMMETRIC
+            const profileHTML = `
+                <div class="profile-item">
+                    <div class="label"><i class="fas fa-user"></i> Student Name</div>
+                    <div class="value">${student['Student Name']}</div>
+                </div>
+                <div class="profile-item">
+                    <div class="label"><i class="fas fa-id-card"></i> Student ID</div>
+                    <div class="value">${student['Student ID']}</div>
+                </div>
+                <div class="profile-item">
+                    <div class="label"><i class="fas fa-graduation-cap"></i> Class</div>
+                    <div class="value">${student['Class']}</div>
+                </div>
+                <div class="profile-item">
+                    <div class="label"><i class="fas fa-hashtag"></i> Roll Number</div>
+                    <div class="value">${student['Roll No.']}</div>
+                </div>
+                <div class="profile-item">
+                    <div class="label"><i class="fas fa-key"></i> Admission No.</div>
+                    <div class="value">${student['Admn. No.']}</div>
+                </div>
+                <div class="profile-item">
+                    <div class="label"><i class="fas fa-user-friends"></i> Father's Name</div>
+                    <div class="value">${student["Father's Name"] || 'N/A'}</div>
+                </div>
+            `;
+            document.getElementById('studentProfile').innerHTML = profileHTML;
+
+            // Calculate Performance
+            const subjects = ['Maths', 'Science', 'English', 'History', 'Sanskrit'];
+            const maxMarks = 100;
+            let totalMarks = 0;
+            let subjectsHTML = '';
+
+            // Process each subject
+            subjects.forEach((subject, index) => {
+                const marks = Number(student[subject]) || 0;
+                totalMarks += marks;
+                const percentage = (marks / maxMarks) * 100;
+                const grade = getGrade(marks, maxMarks);
+
+                subjectsHTML += `
+                    <div class="subject-card">
+                        <div class="subject-header">
+                            <div class="subject-name">${subject}</div>
+                            <span class="subject-grade">${grade}</span>
+                        </div>
+                        <div class="marks-display">
+                            <span class="obtained-marks">${marks}</span>
+                            <span class="total-marks">/ ${maxMarks}</span>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-label">
+                                <span>Performance</span>
+                                <span>${percentage.toFixed(1)}%</span>
+                            </div>
+                            <div class="progress-bar-large">
+                                <div class="progress-fill-large" style="width: 0%" data-width="${percentage}%"></div>
+                            </div>
+                        </div>
+                        <div class="subject-stats">
+                            <div class="stat">
+                                <span class="stat-value">${grade}</span>
+                                <span class="stat-label">Grade</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">${percentage >= 50 ? 'Pass' : 'Fail'}</span>
+                                <span class="stat-label">Status</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('subjectsGrid').innerHTML = subjectsHTML;
+
+            // Calculate overall performance
+            const maxTotal = subjects.length * maxMarks;
+            const overallPercentage = ((totalMarks / maxTotal) * 100).toFixed(2);
+            const overallGrade = getOverallGrade(overallPercentage);
+
+            // SYMMETRIC Performance Grid
+            const performanceHTML = `
+                <div class="performance-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Overall Percentage</h3>
+                    </div>
+                    <div class="card-value">${overallPercentage}%</div>
+                    <div class="card-label">Academic Performance Score</div>
+                    <div class="card-progress">
+                        <div class="card-progress-bar" style="width: 0%" data-width="${overallPercentage}%"></div>
+                    </div>
+                </div>
+                <div class="performance-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3>Total Marks</h3>
+                    </div>
+                    <div class="card-value">${totalMarks}</div>
+                    <div class="card-label">Out of ${maxTotal} Total Marks</div>
+                    <div class="card-progress">
+                        <div class="card-progress-bar" style="width: 0%" data-width="${overallPercentage}%"></div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('performanceGrid').innerHTML = performanceHTML;
+
+            // Grade Showcase
+            const trophyIcon = overallPercentage >= 90 ? 'fa-trophy' : 
+                              overallPercentage >= 80 ? 'fa-medal' : 
+                              overallPercentage >= 70 ? 'fa-award' : 
+                              overallPercentage >= 60 ? 'fa-star' : 'fa-certificate';
+
+            const gradeHTML = `
+                <div class="trophy-icon"><i class="fas ${trophyIcon}"></i></div>
+                <div class="grade-value">${overallGrade}</div>
+                <div class="grade-description">Overall Academic Performance</div>
+                <div class="grade-details">
+                    <div class="grade-detail">
+                        <div class="label">Percentage</div>
+                        <div class="value">${overallPercentage}%</div>
+                    </div>
+                    <div class="grade-detail">
+                        <div class="label">Total Marks</div>
+                        <div class="value">${totalMarks}/${maxTotal}</div>
+                    </div>
+                    <div class="grade-detail">
+                        <div class="label">Grade</div>
+                        <div class="value">${getGrade(totalMarks/subjects.length, maxMarks)}</div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('gradeShowcase').innerHTML = gradeHTML;
+
+            // Performance Insights
+            const insights = generateInsights(student, subjects, overallPercentage);
+            document.getElementById('insightsGrid').innerHTML = insights;
+
+            // Footer Metadata
+            document.getElementById('genId').textContent = 'VM-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+            document.getElementById('genDate').textContent = new Date().toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            // Show Result Container
+            const container = document.getElementById('resultContainer');
+            container.classList.remove('show');
+            void container.offsetWidth;
+            container.classList.add('show');
+            
+            // Animate progress bars
+            setTimeout(() => {
+                animateProgressBars();
+            }, 300);
+            
+            // Scroll to results
+            setTimeout(() => {
+                container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 500);
+        }
+
+        // Animate progress bars
+        function animateProgressBars() {
+            const progressBars = document.querySelectorAll('.progress-fill-large, .card-progress-bar');
+            progressBars.forEach(bar => {
+                const width = bar.getAttribute('data-width');
+                if (width) {
+                    bar.style.width = width;
+                }
+            });
+        }
+
+        // Generate performance insights
+        function generateInsights(student, subjects, overallPercentage) {
+            let strengths = [];
+            let weaknesses = [];
+            let recommendations = [];
+            
+            // Analyze subject performance
+            subjects.forEach(subject => {
+                const marks = Number(student[subject]) || 0;
+                const percentage = (marks / 100) * 100;
+                
+                if (percentage >= 80) {
+                    strengths.push(subject);
+                } else if (percentage < 50) {
+                    weaknesses.push(subject);
+                }
+            });
+            
+            // Generate recommendations
+            if (overallPercentage >= 90) {
+                recommendations.push("Excellent performance! Consider advanced courses.");
+                recommendations.push("Maintain current study habits and focus.");
+            } else if (overallPercentage >= 70) {
+                recommendations.push("Good performance. Focus on improving weaker subjects.");
+                recommendations.push("Practice regularly to maintain consistency.");
+            } else if (overallPercentage >= 50) {
+                recommendations.push("Average performance. Need more practice.");
+                recommendations.push("Seek teacher guidance for difficult topics.");
+            } else {
+                recommendations.push("Needs significant improvement in multiple subjects.");
+                recommendations.push("Consider additional tutoring support.");
+            }
+            
+            // Add subject-specific recommendations
+            if (weaknesses.length > 0) {
+                recommendations.push(`Focus more on: ${weaknesses.join(', ')}`);
+            }
+            
+            return `
+                <div class="insight-card">
+                    <div class="insight-header">
+                        <div class="insight-icon">
+                            <i class="fas fa-thumbs-up"></i>
+                        </div>
+                        <h4>Strengths</h4>
+                    </div>
+                    <div class="insight-content">
+                        <p>Subjects where the student performed exceptionally well:</p>
+                        <ul class="insight-list">
+                            ${strengths.map(subject => `<li>${subject}</li>`).join('')}
+                            ${strengths.length === 0 ? '<li>All subjects show balanced performance</li>' : ''}
+                        </ul>
+                    </div>
+                </div>
+                <div class="insight-card">
+                    <div class="insight-header">
+                        <div class="insight-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h4>Recommendations</h4>
+                    </div>
+                    <div class="insight-content">
+                        <p>Suggested actions for academic improvement:</p>
+                        <ul class="insight-list">
+                            ${recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+                <div class="insight-card">
+                    <div class="insight-header">
+                        <div class="insight-icon">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <h4>Performance Summary</h4>
+                    </div>
+                    <div class="insight-content">
+                        <p>Key performance indicators and statistics:</p>
+                        <ul class="insight-list">
+                            <li>Overall Percentage: <strong>${overallPercentage}%</strong></li>
+                            <li>Subjects Evaluated: <strong>${subjects.length}</strong></li>
+                            <li>Strong Subjects: <strong>${strengths.length}</strong></li>
+                            <li>Subjects Needing Improvement: <strong>${weaknesses.length}</strong></li>
+                            <li>Attendance Rate: <strong>95%</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getGrade(marks, maxMarks) {
+            const p = (marks / maxMarks) * 100;
+            if (p >= 90) return 'A+';
+            if (p >= 80) return 'A';
+            if (p >= 70) return 'B+';
+            if (p >= 60) return 'B';
+            if (p >= 50) return 'C';
+            if (p >= 40) return 'D';
+            return 'F';
+        }
+
+        function getOverallGrade(p) {
+            if (p >= 90) return 'Outstanding';
+            if (p >= 80) return 'Excellent';
+            if (p >= 70) return 'Very Good';
+            if (p >= 60) return 'Good';
+            if (p >= 50) return 'Average';
+            if (p >= 40) return 'Below Average';
+            return 'Needs Improvement';
+        }
+
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.className = type;
+            const icon = type === 'success' ? 'fa-check-circle' : 
+                        type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle';
+            messageDiv.innerHTML = `<i class="fas ${icon}"></i> ${text}`;
+            messageDiv.style.display = 'flex';
+            
+            // Auto-hide success messages after 5 seconds
+            if (type === 'success') {
+                setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // PDF Download Simulation
+        function downloadPDF() {
+            showMessage('PDF generation feature would be implemented in production version', 'info');
+        }
+
+        // Enter key listeners
+        document.getElementById('verifyName').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') verifyStudent();
+        });
+        
+        document.getElementById('verifyStudentId').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') verifyStudent();
+        });
+        
+        document.getElementById('verifyAdmission').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') verifyStudent();
+        });
+        
+        document.getElementById('studentId').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') searchStudent();
+        });
+
+        // Initialize with sample data message
+        showMessage('Welcome to VibeMedia Academic Portal. Please upload the student database file to begin.', 'info');
+    </script>
+</body>
+</html>
